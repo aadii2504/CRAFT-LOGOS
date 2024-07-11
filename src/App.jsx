@@ -7,13 +7,17 @@ import Header from './components/Header'
 import SideNav from './components/SideNav'
 import IconController from './components/IconController'
 import BackgroundController from './components/BackgroundController'
+import LogoPreview from './components/LogoPreview'
+import { UpdateStorageContext } from './context/UpdateStorageContext'
 
 function App() {
   const [count, setCount] = useState(0)
   const[selectedIndex,setselectedIndex]=useState();
+  const[updateStorage,setUpdateStorage]=useState({});
 
   return (
-    <>
+    <UpdateStorageContext.Provider value={{updateStorage,setUpdateStorage}}>
+    <div>
 
         <Header/> 
 
@@ -21,7 +25,7 @@ function App() {
         <SideNav selectedIndex={(value)=>setselectedIndex(value)}/> 
       </div>
 
-        <div className='ml-64 grid grid-cols-1 md:grid-cols-6 fixed'>
+        <div className='ml-64 grid grid-cols-1 md:grid-cols-6'>
          <div className='md:col-span-2 border h-screen shadow-sm p-5 overflow-auto'>
           {selectedIndex==0?
           <IconController/>:
@@ -31,16 +35,17 @@ function App() {
            
          </div>
 
-         <div className='md:col-span-3 bg-red-500'>
-            Icon Preview
+         <div className='md:col-span-3'>
+           <LogoPreview/>
          </div>
 
-         <div className='bg-blue-500'>
+         <div className='bg-blue-500 md:col-span-1'>
           Ads Banner
          </div>
          
         </div>
-    </>
+    </div>
+    </UpdateStorageContext.Provider>
   )
 }
 
