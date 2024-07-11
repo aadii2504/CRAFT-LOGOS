@@ -21,8 +21,8 @@ function App() {
         <SideNav selectedIndex={(value)=>setselectedIndex(value)}/> 
       </div>
 
-        <div className='ml-64 grid grid-cols-1 md:grid-cols-6'>
-         <div className='md:col-span-2 border h-screen shadow-sm p-5'>
+        <div className='ml-64 grid grid-cols-1 md:grid-cols-6 fixed'>
+         <div className='md:col-span-2 border h-screen shadow-sm p-5 overflow-auto'>
           {selectedIndex==0?
           <IconController/>:
           <BackgroundController/> 
@@ -30,12 +30,15 @@ function App() {
            
            
          </div>
+
          <div className='md:col-span-3 bg-red-500'>
             Icon Preview
          </div>
+
          <div className='bg-blue-500'>
           Ads Banner
          </div>
+         
         </div>
     </>
   )
