@@ -1,8 +1,11 @@
 import { UpdateStorageContext } from '@/context/UpdateStorageContext';
+import html2canvas from 'html2canvas';
 import { icons } from 'lucide-react';
 import React, { useContext, useEffect, useState } from 'react'
+const BASE_URl='https://logoexpress.tubeguruji.com'
 
-function LogoPreview() {
+
+function LogoPreview({downloadIcon}) {
   const[storageValue,setStorageValue]=useState();
   const {updateStorage,setUpdateStorage}=useContext(UpdateStorageContext);
 
@@ -12,6 +15,27 @@ function LogoPreview() {
     setStorageValue(storageData);
 
   },[updateStorage])
+
+  useEffect(()=>{
+    if(downloadIcon)
+      {
+        downloadPngLogo();
+      }
+  },[downloadIcon])
+
+  const downloadPngLogo=()=>{
+      const downloadLogoDiv=document.getElementById('downloadLogoDiv');
+
+      html2canvas(downloadLogoDiv,{
+        backgroundColor:null
+      }).then(canvas=>{
+        const pngImage=canvas.toDataURL('image/png');
+        const downloadLink=document.createElement('a');
+        downloadLink.href=pngImage;
+        downloadLink.download='craft logo.png';
+        downloadLink.click();
+      })
+  }
 
 
   const Icon =({name,color,size,rotate})=>{
@@ -38,17 +62,28 @@ function LogoPreview() {
         }}
         >
 
-          <div className='h-full w-full flex items-center justify-center'
+          <div 
+          id='downloadLogoDiv'
+          className='h-full w-full flex items-center justify-center'
           style={{
             borderRadius:storageValue?.bgRounded,
             background:storageValue?.bgColor,
           }}
           >
-            <Icon name={storageValue?.icon}
+            {storageValue?.icon?.includes('.png')?
+              <img src={"/png/"+storageValue?.icon} 
+              style={{
+                height:storageValue?.iconSize,
+                width:storageValue?.iconSize,
+              }}
+              />:
+              <Icon name={storageValue?.icon}
             color={storageValue?.iconColor}
             size={storageValue?.iconSize}
             rotate={storageValue?.iconRotate}
             />
+          }
+            
           </div>
         </div>
     </div>
